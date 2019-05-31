@@ -1,0 +1,8 @@
+README.md
+setup.py
+src/CICD_Practice.egg-info/PKG-INFO
+src/CICD_Practice.egg-info/SOURCES.txt
+src/CICD_Practice.egg-info/dependency_links.txt
+src/CICD_Practice.egg-info/top_level.txt
+src/practice/__init__.py
+src/practice/generator.py
