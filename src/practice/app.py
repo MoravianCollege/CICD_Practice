@@ -8,10 +8,12 @@ def hello():
 @app.route('/foo', methods = ['GET'])
 def get_bar():
     bar = request.args.get('bar', None)
-    if bar is None:
+    mub = request.args.get('mub', None)
+
+    if (bar is None) or (mub is None):
         abort(404)
     else:
-        return "<html>" +  hello() + "<br/>bar is " + bar + "</html>"
+        return "<html>" +  hello() + "<br/>bar is " + bar + "<br/>mub is " + mub + "</html>"
 
 if __name__ == "__main__":
 	app.run(host='0.0.0.0', port=80)
