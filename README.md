@@ -1,5 +1,7 @@
 # CICD_Practice
 
+![can't find build status](https://travis-ci.org/MoravianCollege/CICD_Practice.svg?branch=master)
+
 In regards to the project structure, see this quote from Dr. Coleman:
 
 > Tests should be in tests/ and source should be in src. This allows us to separate production code from test code, but it also causes problems with import statements. We place our code in a package and install it as editable to address the import problem.
