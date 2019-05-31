@@ -18,3 +18,21 @@ In regards to the project structure, see this quote from Dr. Coleman:
 
 You should now be able to run `pytest` from the root of the project or `/tests/`
 
+**Continuous Integration Setup**
+
+The file `.travis.yml` tells Travis-CI to install the requirements and then execute pytest.
+
+The following file allows us to use Travis-CI for a Python 3.7 project.
+The `xenial` line is just to get Travis-CI to work with Python 3.7.
+We use `install` to tell Travis-CI what to install and then `script` get Travis-CI to run `pytest`.
+
+```
+dist: xenial
+language: python
+python: 3.7
+install:
+- pip install -r requirements.txt
+- python setup.py install
+script: pytest
+```
+
