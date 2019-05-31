@@ -10,7 +10,7 @@ In regards to the project structure, see this quote from Dr. Coleman:
 
 **Developer Setup**
 
-1. Create a virtual environment: 
+* Create a virtual environment: 
   * Run `python3 -m venv .venv` to set up the virtual environment
   * Then run `source .venv/bin/activate` to start up the virtual environment
 * Install the required libraries with 
@@ -38,3 +38,27 @@ install:
 script: pytest
 ```
 
+**Continuous Deployment Setup**
+
+* First we must clone the production repo, not a fork, so that Travis-CI will be deploying the correct repo.
+* Create an SSH key: `ssh-keygen -b 4096 -C 'build@travis-ci.com' -f ./deploy_rsa`
+* Place the public key on the server's authorized users directory.
+* Encrypt the private key: `travis encrypt-file deploy_rsa --org --add`
+This will use the travis-ci.com endpoint and add the appropriate line to the `.travis.yml` file. Replacing the `--pro` flag with `--org` will use the travis-ci.org endpoint.
+* Edit the `.travis.yml` and change `before_install` to `before_deploy`. The generated version makes the file available during testing, which isn't necessary - and is a security risk.
+* Add `deploy_rsa.enc` and the edited version of `.travis.yml` to the repo. NOT `deploy_rsa`, which is the unencrypted version!!!
+* Change the IP in `ssh_known_hosts` and `script`, and edit the path in `script`; both should match the server setup.
+* Finally, add `deploy.sh` to the repo so that Travis-CI can deploy the project
+
+```
+addons:
+  ssh_known_hosts:
+  - 18.219.192.252
+before_deploy:
+- openssl aes-256-cbc -K $encrypted_49099c38b3b5_key -iv $encrypted_49099c38b3b5_iv -in deploy_rsa.enc -out deploy_rsa -d
+- chmod 600 deploy_rsa
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: ssh -i deploy_rsa ubuntu@18.219.192.252 'source /home/ubuntu/CICD_Practice/deploy.sh'
+```
